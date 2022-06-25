@@ -3,12 +3,14 @@ import QuestionCard from "./components/QuestionCard";
 import { fetchQuizQuestions } from "./API";
 import "./styles.css";
 import { Difficulty, QuestionState } from "./API";
-type AnswerObject = {
+
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
   correctAnswer: string;
 };
+
 export default function App() {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState<QuestionState[]>([]);
@@ -45,7 +47,14 @@ export default function App() {
       setUserAnswers([...userAnswers, answerObject]);
     }
   };
-  const nextQuestion = () => {};
+  const nextQuestion = () => {
+    const next = number + 1;
+    if (next === TOTAL_QUESTIONS) {
+      setGameOver(true);
+    } else {
+      setNumber(next);
+    }
+  };
   return (
     <div className="App">
       <h1>Quiz</h1>
@@ -54,9 +63,13 @@ export default function App() {
           Start
         </button>
       ) : null}
-      {!gameOver && <p className="score">Score:</p>}
+      {!gameOver && userAnswers.length < 10 ? (
+        <p className="score">Score:{score}</p>
+      ) : (
+        <p>Congratulations, your score was: {score}</p>
+      )}
       {loading && <p>Loading Questions...</p>}
-      {!loading && !gameOver && (
+      {!loading && !gameOver && userAnswers.length < 10 && (
         <QuestionCard
           questionNr={number + 1}
           totalQuestions={TOTAL_QUESTIONS}
