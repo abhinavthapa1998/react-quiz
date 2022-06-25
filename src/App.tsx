@@ -48,15 +48,19 @@ export default function App() {
           questionNr={number + 1}
           totalQuestions={TOTAL_QUESTIONS}
           question={questions[number].question}
-          answers={questions[number].answers}
+          answers={questions[number].answer}
           userAnswer={userAnswers ? userAnswers[number] : null}
           callback={checkAnswer}
         />
       )}
-
-      <button className="next" onClick={nextQuestion}>
-        Next Question
-      </button>
+      {!gameOver &&
+      !loading &&
+      userAnswers.length === number + 1 &&
+      number !== TOTAL_QUESTIONS - 1 ? (
+        <button className="next" onClick={nextQuestion}>
+          Next Question
+        </button>
+      ) : null}
     </div>
   );
 }
