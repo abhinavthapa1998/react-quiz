@@ -7,7 +7,7 @@ type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
-  coorectAnswer: string;
+  correctAnswer: string;
 };
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,20 @@ export default function App() {
     setNumber(0);
     setLoading(false);
   };
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!gameOver) {
+      const answer = e.currentTarget.value;
+      const correct = questions[number].correct_answer === answer;
+      if (correct) setScore((prev) => prev + 1);
+      const answerObject: AnswerObject = {
+        question: questions[number].question,
+        answer,
+        correct,
+        correctAnswer: questions[number].correct_answer
+      };
+      setUserAnswers([...userAnswers, answerObject]);
+    }
+  };
   const nextQuestion = () => {};
   return (
     <div className="App">
